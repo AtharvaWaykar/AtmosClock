@@ -14,16 +14,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 
-
-
-
 /* 
  * Clock analog
  */
 
 public class ClockGui extends Canvas implements MouseListener, Runnable {
-
-
 
 
 	private static final long serialVersionUID = 1030296368320806826L;
@@ -35,7 +30,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	private int centerX;
 	private int centerY;
 	int curr = -1;
-
+	TickTimerTask tick;
 	private Thread thread; 
 
 	SimpleDateFormat sf;
@@ -50,7 +45,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	Timer timer;
 	TimeZone timeZone;
 	static String str;
-	BufferStrategy bs;
+
 	public static void main(String args[]){
 
 		new ClockGui();
@@ -72,9 +67,11 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 	}
 	public synchronized void stop() {
-		try {
+		try {	
+			tick.cancel();
+			
+			System.gc();
 			thread.join();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,32 +83,35 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		timer = new Timer();
 		timeZone = TimeZone.getDefault();
 
-		timer.schedule(new TickTimerTask(), 0, 1000); //after 1s once repaint
+		System.out.println("runnidsfng");
+		tick = new TickTimerTask();
+		timer.schedule(tick, 0, 1000); //after 1s once repaint
 
 
-		stop();
+
 	}
 
 	class TickTimerTask extends TimerTask{
 
 		@Override
-		public void run() {		
-			timer = new Timer();
-			timeZone = TimeZone.getDefault();
+		public void run() {	
+			
 
-			cal = (Calendar) Calendar.getInstance(timeZone);
+			
+				timer = new Timer();
+				timeZone = TimeZone.getDefault();
 
-			bs = getBufferStrategy();
-			if (bs == null){
-				createBufferStrategy(2);
-				return;
-			}
-			Graphics g = bs.getDrawGraphics();
+				cal = (Calendar) Calendar.getInstance(timeZone);
 
-
-			apaint(g);
-			g.dispose();
-			bs.show();
+				BufferStrategy bs = getBufferStrategy();
+				if (bs == null){
+					createBufferStrategy(2);
+					return;
+				} 			
+				Graphics g = bs.getDrawGraphics();
+				apaint(g);
+				g.dispose();
+				bs.show();
 
 		}
 
@@ -119,7 +119,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 	public void apaint(Graphics g) {
 
-		//super.paint(g); 
+		
 		if(status==0){
 			g.setColor(new Color(212, 234, 255));
 			g.fillRect(0, 0, 400, 430);		
@@ -311,7 +311,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 	/*---------------- Draws Clock Hands--------------------*/
 	private void drawHands(Graphics g, double hour, double minute, double second, Color colorSecond, Color colorMHour) {
-		
+
 		rsecond = (second*6)*(Math.PI)/180;
 		rminute = ((minute + (second / 60)) * 6) * (Math.PI) / 180;
 		rhours = ((hour + (minute / 60)) * 30) * (Math.PI) / 180;

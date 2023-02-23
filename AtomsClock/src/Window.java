@@ -29,40 +29,65 @@ public class Window extends Canvas{
 	public Window(ClockGui clock) {
 		frame = new JFrame("AtmosClock");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
-		frame.setBounds(700, 100, 400, 430);
+		frame.setBounds(700, 100, 400, 450);
 		frame.getContentPane().setBackground(new Color(212, 234, 255));
 		
 		frame.setLayout(new BorderLayout());
 		frame.setVisible(true);
-		/*------------Creates first screne-----------------*/
+		/*------------Creates first screen-----------------*/
 		JLabel question = new JLabel("Enter a city or a zip code");
 		question.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		question.setBounds(75, 0, 300, 40);
-		frame.add(question);
-		
 		JTextField field = new JTextField(10);
-		field.setBounds(75,100,250,20);  
-		frame.add(field);
+		field.setBounds(75,100,250,20);  	
+		JButton enter = new JButton("Enter");
+		enter.setBounds(150,100,50,20); 
+		JButton change = new JButton("Change City");
+		change.setBounds(150,100,50,20);  
 		
-		JButton button = new JButton("Enter");
-		button.setBounds(150,100,50,20);  
-		frame.getContentPane().add(button, BorderLayout.SOUTH);
+		frame.add(question);
+		frame.add(field);
+		frame.add(enter, BorderLayout.SOUTH);
 		frame.setVisible(true);
 		/*-----------------------------*/
 		
 		//To enter data and open clock
-		button.addActionListener(new ActionListener() {
+		enter.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				city = field.getText();
 				AtmosClockPre.atmos(city);
-				frame.remove(button);
+				field.setText("");
+				frame.add(change, BorderLayout.SOUTH);
+				frame.remove(enter);
 				frame.remove(field);
-				frame.remove(question);
-				clock.addMouseListener(clock);
-				frame.add(clock);	
+				frame.remove(question);			
+				clock.addMouseListener(clock);				
+				frame.add(clock);					
 				frame.setVisible(true);
 				clock.start();
+			}
+
+		});
+			
+		/*-----------------------------*/
+		
+		//To go back to change city
+		change.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				frame.add(enter, BorderLayout.SOUTH);
+				frame.remove(change);
+				clock.stop();
+				frame.remove(clock);
+				clock.removeMouseListener(clock);
+				System.out.print("clocked");		
+				frame.add(question);	
+				frame.add(field);	
+				field.requestFocus();
+				frame.setVisible(true);
+				
+						
 			}
 
 		});
