@@ -3,7 +3,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 
 public class AtmosClockData {
@@ -12,7 +14,9 @@ public class AtmosClockData {
 	static double [] hum = new double [48];
 	static double [] sun = new double [48];
 	static double [] per = new double [48];
+	static String[] zone = new String [1];
 	static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	
 	public static double [][] getData(String city) {
 
 		try {
@@ -41,6 +45,22 @@ public class AtmosClockData {
 			Calendar now =  Calendar.getInstance();
 			now.set(Calendar.MINUTE, 0);
 			now.set(Calendar.HOUR_OF_DAY, 0);
+			for(int aa = 0 ; aa < response.length()-10; aa++) {
+
+				//gets timezone
+				if(response.substring(aa, aa+9).equals("\"tz_id\":\"")) {
+					for(int bb =aa+9 ; bb<response.length(); bb++) {
+						if(response.substring(bb, bb+1).equals(",")) {
+							ClockGui.timeZone = TimeZone.getTimeZone(response.substring(aa+9,bb -1).toString());
+							ClockGui.zone = ZoneId.of(response.substring(aa+9,bb -1).toString());
+							break;
+						}
+						
+					}
+					break;
+				}
+				
+			}
 			for(int t = 0; t < 2; t++) {
 				
 				for (int a = 0 + (t * 24); a < 24 + (t * 24); a++) {
@@ -65,7 +85,7 @@ public class AtmosClockData {
 			finalData[1] = hum;
 			finalData[2] = sun;
 			finalData[3] = per;
-			
+						
 //			testing
 //			for(int i = 0; i < 4; i++) {
 //				for (int j = 0; j < 48; j++) {
@@ -84,7 +104,7 @@ public class AtmosClockData {
 		return finalData;
 	}
 
-	public static void setDay(int i, StringBuilder response, int index ) {
+	private static void setDay(int i, StringBuilder response, int index ) {
 		for(int j= i ; j<response.length(); j++) {
 
 			//gets precipitation amount
@@ -138,5 +158,7 @@ public class AtmosClockData {
 		}
 
 	}
+	
+
 
 }

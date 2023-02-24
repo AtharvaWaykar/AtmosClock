@@ -81,12 +81,10 @@ public class Window extends Canvas{
 				clock.stop();
 				frame.remove(clock);
 				clock.removeMouseListener(clock);
-				System.out.print("clocked");		
 				frame.add(question);	
 				frame.add(field);	
 				field.requestFocus();
 				frame.setVisible(true);
-				
 						
 			}
 

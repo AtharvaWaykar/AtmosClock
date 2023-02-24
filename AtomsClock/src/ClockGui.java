@@ -11,6 +11,7 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 
@@ -43,9 +44,9 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	double rminute ;
 	double rhours ;
 	Timer timer;
-	TimeZone timeZone;
+	static TimeZone timeZone;
 	static String str;
-
+	static ZoneId zone;
 	public static void main(String args[]){
 
 		new ClockGui();
@@ -81,9 +82,9 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	public void run() {
 
 		timer = new Timer();
-		timeZone = TimeZone.getDefault();
+		
 
-		System.out.println("runnidsfng");
+		
 		tick = new TickTimerTask();
 		timer.schedule(tick, 0, 1000); //after 1s once repaint
 
@@ -98,10 +99,9 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 			
 
 			
-				timer = new Timer();
-				timeZone = TimeZone.getDefault();
+				//timeZone = TimeZone.getDefault();
 
-				cal = (Calendar) Calendar.getInstance(timeZone);
+				//cal = (Calendar) Calendar.getInstance(timeZone);
 
 				BufferStrategy bs = getBufferStrategy();
 				if (bs == null){
@@ -160,31 +160,31 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		drawNumberClock(g);
 
 		//get system time
-		cal = Calendar.getInstance();
+		cal = Calendar.getInstance(timeZone);
+		sf = new SimpleDateFormat("EE MMM dd a");
+		sf.setTimeZone(timeZone);
+		
 		hour = cal.get(Calendar.HOUR);
 		minute = cal.get(Calendar.MINUTE);
 		second = cal.get(Calendar.SECOND);	
-
+		
 		//	draw date and its box
 		if(status ==0){
 
 			g.setColor(Color.BLACK);
 			g.drawRect(centerX -50 , centerY-200, 100, 20);
-			sf = new SimpleDateFormat("EE MMM dd a");
 			g.drawString(sf.format(cal.getTime()), centerX + 7 - 50, centerY-185);
 		}
 
 		if(status == 1){
 			g.setColor(Color.BLACK);
-			g.drawRect(centerX -50 , centerY-200, 100, 20);
-			sf = new SimpleDateFormat("EE MMM dd a");
+			g.drawRect(centerX -50 , centerY-200, 100, 20);		
 			g.drawString(sf.format(cal.getTime()), centerX + 7 - 50, centerY-185);
 		}
 
 		if(status ==2){
 			g.setColor(Color.YELLOW);
-			g.drawRect(centerX -50 , centerY-200, 100, 20);
-			sf = new SimpleDateFormat("EE MMM dd a");
+			g.drawRect(centerX -50 , centerY-200, 100, 20);	
 			g.drawString(sf.format(cal.getTime()), centerX + 7 - 50, centerY-185);
 
 		}
@@ -264,7 +264,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
 		DateTimeFormatter dtfspec = DateTimeFormatter.ofPattern("HHmmss");
-		LocalTime now = LocalTime.now();
+		LocalTime now = LocalTime.now(zone);
 		boolean check = true;
 		//midnight data call 
 		if(Integer.parseInt(dtfspec.format(now)) == 000002 && check){
