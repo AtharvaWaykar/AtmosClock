@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
 import java.util.TimeZone;
 import java.util.Timer;
 
@@ -56,7 +56,13 @@ public class Window extends Canvas{
 
 			public void actionPerformed(ActionEvent e) {
 				city = field.getText();
+				ClockGui.str = city;
+				try {
 				AtmosClockPre.atmos(city);
+				} catch (IOException ioe) {
+					System.out.print("hello");
+					System.exit(0);
+				}
 				field.setText("");
 				frame.add(change, BorderLayout.SOUTH);
 				frame.remove(enter);

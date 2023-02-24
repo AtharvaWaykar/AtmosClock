@@ -1,13 +1,14 @@
 
 import java.awt.Color;
+import java.io.IOException;
 
-public class AtmosClockPre {
+public class AtmosClockPre  {
 
 	private static Color [] level = null;
 	private static double [][] data = null;
 	private static Color[] raining = null;
 
-	public static void atmos(String city) {
+	public static void atmos(String city) throws IOException {
 		
 
 
@@ -18,7 +19,7 @@ public class AtmosClockPre {
 
 
 		data = AtmosClockData.getData(city);
-		
+
 
 		double [] pointSystem = new double[48];
 

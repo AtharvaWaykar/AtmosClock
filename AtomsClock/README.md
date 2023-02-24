@@ -47,7 +47,9 @@ Option to change location along with time in interface
 
 Error message when inputing invalid city or zip code
 
-Fixing bug where cities with two words do not work properly
+Fixing bug where cities with two or more words did not work properly
+
+Fixed bug where midnight refresh did not work
 
 
 

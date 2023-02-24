@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,12 +18,13 @@ public class AtmosClockData {
 	static String[] zone = new String [1];
 	static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	
-	public static double [][] getData(String city) {
+	public static double [][] getData(String city) throws IOException {
 
 		try {
 			
 			String apiKey = "18641e7bfc3d4e78a03195018230402";
-
+			city = city.trim().replace(' ', '_');
+			System.out.print(city + " ");
 			String urlString = "http://api.weatherapi.com/v1/forecast.json?key=" + apiKey + "&q="+ city + "&days=2&aqi=no&alerts=no";
 
 			URL url = new URL(urlString);
@@ -30,9 +32,9 @@ public class AtmosClockData {
 
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
-
+			
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
+			
 			String inputLine;
 			StringBuilder response = new StringBuilder();
 			String responseHelp = "";
@@ -97,7 +99,9 @@ public class AtmosClockData {
 			
 //			}
 
-		} catch (Exception e) {
+		} catch (IOException ioe) {
+			throw ioe;
+		} catch (Exception e ) {
 			e.printStackTrace();
 		}
 

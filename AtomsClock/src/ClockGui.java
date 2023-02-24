@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -96,12 +97,6 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 		@Override
 		public void run() {	
-			
-
-			
-				//timeZone = TimeZone.getDefault();
-
-				//cal = (Calendar) Calendar.getInstance(timeZone);
 
 				BufferStrategy bs = getBufferStrategy();
 				if (bs == null){
@@ -268,8 +263,11 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		boolean check = true;
 		//midnight data call 
 		if(Integer.parseInt(dtfspec.format(now)) == 000002 && check){
+			try {
 			AtmosClockPre.atmos(str);
-
+			} catch (IOException ioe) {
+				
+			}
 			check = false;
 
 		}
