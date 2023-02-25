@@ -17,11 +17,11 @@ public class AtmosClockData {
 	static double [] per = new double [48];
 	static String[] zone = new String [1];
 	static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-	
+
 	public static double [][] getData(String city) throws IOException {
 
 		try {
-			
+
 			String apiKey = "18641e7bfc3d4e78a03195018230402";
 			city = city.trim().replace(' ', '_');
 			System.out.print(city + " ");
@@ -32,9 +32,9 @@ public class AtmosClockData {
 
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
-			
+
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			
+
 			String inputLine;
 			StringBuilder response = new StringBuilder();
 			String responseHelp = "";
@@ -57,19 +57,19 @@ public class AtmosClockData {
 							ClockGui.zone = ZoneId.of(response.substring(aa+9,bb -1).toString());
 							break;
 						}
-						
+
 					}
 					break;
 				}
-				
+
 			}
 			for(int t = 0; t < 2; t++) {
-				
+
 				for (int a = 0 + (t * 24); a < 24 + (t * 24); a++) {
 					for(int i = 0; i <response.length() ;i++) {
 						if((response.substring(i, i+ 5).equals(sdf.format(now.getTime())))){	
 							setDay(i,response, a);
-							
+
 							responseHelp = response.substring(i);
 							break;
 						}
@@ -80,24 +80,24 @@ public class AtmosClockData {
 					response.append(responseHelp);
 
 				}
-				
+
 			}
 
 			finalData[0] = temp;
 			finalData[1] = hum;
 			finalData[2] = sun;
 			finalData[3] = per;
-						
-//			testing
-//			for(int i = 0; i < 4; i++) {
-//				for (int j = 0; j < 48; j++) {
-//					System.out.print(finalData[i][j]+ " ");
-//				}
-//				System.out.println(finalData[i].length);
-//				System.out.println();
-//				
-			
-//			}
+
+			//			testing
+			//			for(int i = 0; i < 4; i++) {
+			//				for (int j = 0; j < 48; j++) {
+			//					System.out.print(finalData[i][j]+ " ");
+			//				}
+			//				System.out.println(finalData[i].length);
+			//				System.out.println();
+			//				
+
+			//			}
 
 		} catch (IOException ioe) {
 			throw ioe;
@@ -156,13 +156,13 @@ public class AtmosClockData {
 					}
 
 				}
-				
+
 				break;
 			}
 		}
 
 	}
-	
+
 
 
 }

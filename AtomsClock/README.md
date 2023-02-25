@@ -40,16 +40,21 @@ Added exectutable jar file support to clock and made first release
 
 Fixed bug not able to change to different faces caused by update v3.0
 
-## Future
-Automatically also gets location 
 
-Option to change location along with time in interface
+## Version 5.0
+Added Option to change location along with time in interface
 
-Error message when inputing invalid city or zip code
+Added Error message when inputing invalid city or ZIP code
 
-Fixing bug where cities with two or more words did not work properly
+Added button to show further forecast from 12 to 24 hours in the future
+
+Added enter key shortcut to enter button
+
+Fixed bug where cities with two or more words did not work properly
 
 Fixed bug where midnight refresh did not work
 
+## Future
 
+Automatically also gets location 
 

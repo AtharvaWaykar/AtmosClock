@@ -40,7 +40,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	int hour;
 	int minute;
 	int second;
-
+	static boolean showfuture;
 	double rsecond ;
 	double rminute ;
 	double rhours ;
@@ -52,13 +52,11 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 		new ClockGui();
 
-
 	}
 
 	public ClockGui() {
 
 		new Window(this);
-
 
 	}
 
@@ -71,7 +69,6 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	public synchronized void stop() {
 		try {	
 			tick.cancel();
-			
 			System.gc();
 			thread.join();
 		} catch (Exception e) {
@@ -83,13 +80,8 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	public void run() {
 
 		timer = new Timer();
-		
-
-		
 		tick = new TickTimerTask();
 		timer.schedule(tick, 0, 1000); //after 1s once repaint
-
-
 
 	}
 
@@ -98,15 +90,15 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		@Override
 		public void run() {	
 
-				BufferStrategy bs = getBufferStrategy();
-				if (bs == null){
-					createBufferStrategy(2);
-					return;
-				} 			
-				Graphics g = bs.getDrawGraphics();
-				apaint(g);
-				g.dispose();
-				bs.show();
+			BufferStrategy bs = getBufferStrategy();
+			if (bs == null){
+				createBufferStrategy(2);
+				return;
+			} 			
+			Graphics g = bs.getDrawGraphics();
+			apaint(g);
+			g.dispose();
+			bs.show();
 
 		}
 
@@ -114,7 +106,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 	public void apaint(Graphics g) {
 
-		
+
 		if(status==0){
 			g.setColor(new Color(212, 234, 255));
 			g.fillRect(0, 0, 400, 430);		
@@ -158,11 +150,11 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		cal = Calendar.getInstance(timeZone);
 		sf = new SimpleDateFormat("EE MMM dd a");
 		sf.setTimeZone(timeZone);
-		
+
 		hour = cal.get(Calendar.HOUR);
 		minute = cal.get(Calendar.MINUTE);
 		second = cal.get(Calendar.SECOND);	
-		
+
 		//	draw date and its box
 		if(status ==0){
 
@@ -210,7 +202,6 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 			if (sec%5 == 0) {
 				ticStart = size/2-10;
 			}else{
-
 				ticStart = size/2-5;
 			}
 
@@ -264,9 +255,9 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		//midnight data call 
 		if(Integer.parseInt(dtfspec.format(now)) == 000002 && check){
 			try {
-			AtmosClockPre.atmos(str);
+				AtmosClockPre.atmos(str);
 			} catch (IOException ioe) {
-				
+
 			}
 			check = false;
 
@@ -302,6 +293,13 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 		g.setColor(AtmosClockPre.getRaining(n + n1));
 		g.fillOval(centerX-5 +(int)((size/2-20-75) * -sine), centerY-5 + (int)((size/2-20-75) * -cosine), 10, 10);
 
+		//for showing next 12-24 hours of data on clock
+		if(showfuture) {
+			g.setColor(AtmosClockPre.getColor(n + n1 + 12));
+			g.fillOval(centerX-10 +(int)((size/2-120) * -sine), centerY-10 + (int)((size/2-120) * -cosine), 20, 20);
+			g.setColor(AtmosClockPre.getRaining(n + n1 +12));
+			g.fillOval(centerX-5 +(int)((size/2-145) * -sine), centerY-5 + (int)((size/2-145) * -cosine), 10, 10);
+		}
 		//for number color
 		g.setColor(Color.BLACK);
 	}

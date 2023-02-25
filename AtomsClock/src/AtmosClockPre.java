@@ -9,7 +9,7 @@ public class AtmosClockPre  {
 	private static Color[] raining = null;
 
 	public static void atmos(String city) throws IOException {
-		
+
 
 
 		level = new Color[48];
@@ -65,13 +65,13 @@ public class AtmosClockPre  {
 			}
 
 		}
-//	testing	
-//		for (int j = 0; j < 48; j++) {
-//			System.out.print(j +level[j]+ " ");
-//			System.out.print( getRaining(j)+ "1 ");
-//		}
-		
-	
+		//	testing	
+		//		for (int j = 0; j < 48; j++) {
+		//			System.out.print(j +level[j]+ " ");
+		//			System.out.print( getRaining(j)+ "1 ");
+		//		}
+
+
 
 	}
 
@@ -92,7 +92,7 @@ public class AtmosClockPre  {
 	}
 
 	public static Color getRaining(int index) {
-		
+
 		return raining[index];
 	}
 
