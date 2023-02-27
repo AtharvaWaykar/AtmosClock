@@ -42,7 +42,9 @@ Fixed bug not able to change to different faces caused by update v3.0
 
 
 ## Version 5.0
-Added Option to change location along with time in interface
+Added Option to change location in interface
+
+Clock now shows local time of the city or region instead of computer
 
 Added Error message when inputing invalid city or ZIP code
 

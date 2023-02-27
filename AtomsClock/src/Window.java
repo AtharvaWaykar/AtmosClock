@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.TimeZone;
 import java.util.Timer;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-
+import java.io.PrintWriter;
 
 public class Window extends Canvas{
 
@@ -155,6 +157,22 @@ public class Window extends Canvas{
 
 		});
 		/*-----------------------------*/
+	
 	}
 
+	private void savePref(int ln, String text){
+		String fileName = "AtmosPref";
+		File file = new File(fileName);
+		
+		try {
+			file.createNewFile();
+			PrintWriter writer = new PrintWriter(file);
+			writer.write(text);
+		} catch (Exception e1) {
+			
+			e1.printStackTrace();
+		}
+		
+				
+	}
 }
