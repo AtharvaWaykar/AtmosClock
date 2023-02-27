@@ -24,7 +24,7 @@ public class AtmosClockData {
 
 			String apiKey = "18641e7bfc3d4e78a03195018230402";
 			city = city.trim().replace(' ', '_');
-			System.out.print(city + " ");
+			
 			String urlString = "http://api.weatherapi.com/v1/forecast.json?key=" + apiKey + "&q="+ city + "&days=2&aqi=no&alerts=no";
 
 			URL url = new URL(urlString);
