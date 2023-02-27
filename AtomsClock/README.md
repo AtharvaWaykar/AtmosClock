@@ -36,7 +36,7 @@ Completely eliminated flashing
 
 Added date to the clock display
 
-Added exectutable jar file support to clock and made first release
+Added executable jar file support to clock and made first release
 
 Fixed bug not able to change to different faces caused by update v3.0
 
