@@ -46,25 +46,27 @@ public class Window extends Canvas{
 	static JFrame frame;
 	TrayIcon icon;
 	SystemTray systemTray;
+	static boolean open = true;
 
 	public Window(ClockGui clock) {
 		/*------------Creates window and sets its variables-----------------*/
 		frame = new JFrame("AtmosClock");
 		frame.setUndecorated(true);
-        frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		if(SystemTray.isSupported()) {
 			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 			systemTray = SystemTray.getSystemTray();
 			icon = new TrayIcon(Toolkit.getDefaultToolkit().getImage((getClass().getResource ("Link.png"))));
-			
+
 			try {
-				
+
 				systemTray.add(icon);
-				
+
 			} catch (AWTException e1) {
-				// TODO Auto-generated catch block
+
 				e1.printStackTrace();
 			}
+
 		}else{
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 		}		
@@ -87,15 +89,18 @@ public class Window extends Canvas{
 		Border original  = future.getBorder();
 		JButton change = new JButton("Change City");
 		change.setBounds(150,100,50,20);  
+		JButton close = new JButton("Close");
+		close.setBounds(150,100,50,20);  
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout (FlowLayout.CENTER, 10, 2));
 		/*-----------------------------*/
 		/*------------Creates first screen-----------------*/
 		panel.add(enter);
+		panel.add(close);
 		frame.add(question);
 		frame.add(field);
 		frame.add(panel, BorderLayout.SOUTH);
-		
+		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
 		/*-----------------------------*/
 
@@ -108,11 +113,13 @@ public class Window extends Canvas{
 
 				try {
 					AtmosClockPre.atmos(city);
-					
+
 					field.setText("");
 					panel.add(change);	
 					panel.add(future);	
-					panel.remove(enter);		
+					frame.setVisible(true);
+					panel.remove(enter);
+
 					frame.setVisible(true);
 					frame.remove(field);
 					frame.remove(question);	
@@ -144,7 +151,7 @@ public class Window extends Canvas{
 		enter.addActionListener(enterAction);
 		/*-----------------------------*/
 
-		
+
 		/*-------------Add actions to change city button----------------*/
 
 		change.addActionListener(new ActionListener() {
@@ -152,9 +159,11 @@ public class Window extends Canvas{
 			public void actionPerformed(ActionEvent e) {
 
 				panel.add(enter);
+
 				frame.add(question);	
 				frame.add(field);	
 				frame.setVisible(true);
+
 				panel.remove(future);
 				panel.remove(change);
 
@@ -171,19 +180,44 @@ public class Window extends Canvas{
 
 		});
 		/*-----------------------------*/
-		icon.addMouseListener(new MouseAdapter() {
-		    @Override
-		    
-		    public void mouseClicked(MouseEvent e) {
-		        if (e.getButton() == MouseEvent.BUTTON1) {
-		        	frame.setVisible(false);
-		        	
-		        	frame.setVisible(true);
-		        	
-		        	frame.toFront();
-		        }
-		    }
+		MouseAdapter iconAction = new MouseAdapter() {
+
+
+
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					
+						//frame.setVisible(false);
+
+						frame.setVisible(true);
+						
+						frame.toFront();
+
+						
+					} else if (e.getButton() == MouseEvent.BUTTON3) {
+						frame.setVisible(false);
+						
+					}
+				
+			}
+
+
+
+		};
+		icon.addMouseListener(iconAction);
+		/*--------------Adds close ---------------*/
+		close.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+
+				System.exit(0);
+
+			}
+
 		});
+		/*-----------------------------*/
 		/*--------------Adds action to show next 12H button---------------*/
 		future.addActionListener(new ActionListener() {
 

@@ -106,7 +106,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 
 	public void apaint(Graphics g) {
 
-
+	
 		if(status==0){
 			g.setColor(new Color(212, 234, 255));
 			g.fillRect(0, 0, 400, 430);		
