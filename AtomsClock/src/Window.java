@@ -6,9 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.MenuBar;
-import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -22,11 +19,8 @@ import java.io.IOException;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.io.File;
-import java.io.FileNotFoundException;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
@@ -99,9 +93,11 @@ public class Window extends Canvas{
 		panel.add(close);
 		frame.add(question);
 		frame.add(field);
+		
 		frame.add(panel, BorderLayout.SOUTH);
 		frame.setAlwaysOnTop(true);
 		frame.setVisible(true);
+
 		/*-----------------------------*/
 
 		/*------------Adds actions to Enter button-----------------*/
@@ -110,10 +106,10 @@ public class Window extends Canvas{
 			public void actionPerformed(ActionEvent e) {
 				city = field.getText();
 				ClockGui.str = city;
-
+				
 				try {
 					AtmosClockPre.atmos(city);
-
+					System.out.print("hello");
 					field.setText("");
 					panel.add(change);	
 					panel.add(future);	
@@ -123,7 +119,7 @@ public class Window extends Canvas{
 					frame.setVisible(true);
 					frame.remove(field);
 					frame.remove(question);	
-
+					frame.setVisible(true);
 					clock.addMouseListener(clock);				
 					frame.add(clock);
 					clock.start();
@@ -157,16 +153,17 @@ public class Window extends Canvas{
 		change.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
+				
 				panel.add(enter);
-
+				frame.setVisible(true);
+				
 				frame.add(question);	
 				frame.add(field);	
 				frame.setVisible(true);
 
 				panel.remove(future);
 				panel.remove(change);
-
+				frame.setVisible(true);
 				clock.stop();
 				frame.remove(clock);
 				clock.removeMouseListener(clock);
