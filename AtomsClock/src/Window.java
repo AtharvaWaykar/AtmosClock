@@ -1,14 +1,23 @@
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.MenuBar;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.TimeZone;
 import java.util.Timer;
@@ -17,7 +26,9 @@ import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
@@ -33,11 +44,30 @@ public class Window extends Canvas{
 	boolean clicked = true;
 	String city;
 	static JFrame frame;
+	TrayIcon icon;
+	SystemTray systemTray;
 
 	public Window(ClockGui clock) {
 		/*------------Creates window and sets its variables-----------------*/
 		frame = new JFrame("AtmosClock");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		frame.setUndecorated(true);
+        frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		if(SystemTray.isSupported()) {
+			frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			systemTray = SystemTray.getSystemTray();
+			icon = new TrayIcon(Toolkit.getDefaultToolkit().getImage((getClass().getResource ("Link.png"))));
+			
+			try {
+				
+				systemTray.add(icon);
+				
+			} catch (AWTException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}else{
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		}		
 		frame.setBounds(700, 100, 400, 450);
 		frame.getContentPane().setBackground(new Color(212, 234, 255));
 		frame.setPreferredSize(new Dimension(700, 100));
@@ -65,6 +95,7 @@ public class Window extends Canvas{
 		frame.add(question);
 		frame.add(field);
 		frame.add(panel, BorderLayout.SOUTH);
+		
 		frame.setVisible(true);
 		/*-----------------------------*/
 
@@ -77,6 +108,7 @@ public class Window extends Canvas{
 
 				try {
 					AtmosClockPre.atmos(city);
+					
 					field.setText("");
 					panel.add(change);	
 					panel.add(future);	
@@ -112,6 +144,7 @@ public class Window extends Canvas{
 		enter.addActionListener(enterAction);
 		/*-----------------------------*/
 
+		
 		/*-------------Add actions to change city button----------------*/
 
 		change.addActionListener(new ActionListener() {
@@ -138,7 +171,19 @@ public class Window extends Canvas{
 
 		});
 		/*-----------------------------*/
-
+		icon.addMouseListener(new MouseAdapter() {
+		    @Override
+		    
+		    public void mouseClicked(MouseEvent e) {
+		        if (e.getButton() == MouseEvent.BUTTON1) {
+		        	frame.setVisible(false);
+		        	
+		        	frame.setVisible(true);
+		        	
+		        	frame.toFront();
+		        }
+		    }
+		});
 		/*--------------Adds action to show next 12H button---------------*/
 		future.addActionListener(new ActionListener() {
 
@@ -157,22 +202,22 @@ public class Window extends Canvas{
 
 		});
 		/*-----------------------------*/
-	
+
 	}
 
 	private void savePref(int ln, String text){
 		String fileName = "AtmosPref";
 		File file = new File(fileName);
-		
+
 		try {
 			file.createNewFile();
 			PrintWriter writer = new PrintWriter(file);
 			writer.write(text);
 		} catch (Exception e1) {
-			
+
 			e1.printStackTrace();
 		}
-		
-				
+
+
 	}
 }

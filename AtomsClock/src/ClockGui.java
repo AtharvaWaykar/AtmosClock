@@ -49,7 +49,7 @@ public class ClockGui extends Canvas implements MouseListener, Runnable {
 	static String str;
 	static ZoneId zone;
 	public static void main(String args[]){
-
+		System.setProperty("apple.awt.UIElement", "true");
 		new ClockGui();
 
 	}
